@@ -2,11 +2,12 @@
 
 
 //globals
-int[] [] board;
-float cols, rows;
+int[][] board;
+int cols, rows;
 float cellWidth, cellHeight;
-int bombY;
-int bombX;
+int mineY;
+int mineX;
+int m;
 
 void setup(){
  size (800, 800);
@@ -15,12 +16,17 @@ void setup(){
  rows = 10;
  cellWidth = width/cols;
  cellHeight = height/rows;
+ placeMines();
+ board = new int[cols][rows];
   
 }
 
+
+
 void draw(){
  drawBoard();
- placeBombs();
+ //placeMines();
+
   
 }
 
@@ -34,13 +40,32 @@ void drawBoard(){
   }
 }
   
-void placeBombs(){
+void placeMines(){
   for(int n=0; n < 10; n++ ){
-    bombY = int(random(0 , (cols-1)));
-    bombX = int(random(0 , (cols-1)));
+    mineY = int(random(0 , (cols)));
+    mineX = int(random(0 , (cols)));
+    board[mineX][mineY] = m;
+    drawMines(mineX, mineY);
     
     
+
   }
+       
+} 
+
+
+
+
+void drawMines(int mineX, int mineY){
+  
+  
+  
+  
+  println(mineX, mineY);
+  fill(255);
+
+  
+  
   
   
 }
