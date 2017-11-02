@@ -1,5 +1,5 @@
 // minesweeper
-
+// this is a test
 
 //globals
 int[][] board;
