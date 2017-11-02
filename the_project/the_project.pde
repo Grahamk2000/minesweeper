@@ -3,21 +3,24 @@
 
 //globals
 int[][] board;
+int[] neighbours;
 int cols, rows;
 float cellWidth, cellHeight;
 int mineY;
 int mineX;
-int m;
+
 
 void setup(){
- size (800, 800);
+ size (600, 600);
  background(255);
  cols = 10;
  rows = 10;
  cellWidth = width/cols;
  cellHeight = height/rows;
- placeMines();
  board = new int[cols][rows];
+ neighbours = new int[8];
+ placeMines();
+
   
 }
 
@@ -26,6 +29,7 @@ void setup(){
 void draw(){
  drawBoard();
  //placeMines();
+ findNeighbouringMines();
 
   
 }
@@ -33,37 +37,54 @@ void draw(){
 
 void drawBoard(){ 
   strokeWeight(6);
-  for (int x=0; x<(width); x += cellWidth) {
-    for (int y=0; y<(height); y += cellHeight) {
-    rect(x, y, cellWidth, cellHeight);
+  for (int x=0; x<cols; x++) {
+    for (int y=0; y<rows; y++) {
+      if (board[x][y] != 7){
+    fill(255);
+    rect(x*cellWidth, y*cellHeight, cellWidth, cellHeight);
+      }
   }
   }
+  
+  drawMines();
 }
   
 void placeMines(){
   for(int n=0; n < 10; n++ ){
-    mineY = int(random(0 , (cols)));
-    mineX = int(random(0 , (cols)));
-    board[mineX][mineY] = m;
-    drawMines(mineX, mineY);
-    
-    
-
+    int mineX = int(random(cols));
+    int mineY = int(random(rows));
+    board[mineX][mineY] = 7;
+    println (mineX, mineY);
   }
-       
 } 
 
 
+void drawMines(){
+  for (int x=0; x<cols; x++) {
+    for (int y=0; y<rows; y++) {
+      if (board[x][y] == 7){
+        fill(0, 255, 0);
+        rect(x*cellWidth, y*cellHeight, cellWidth, cellHeight);
+        
+      }
+    }
+  } 
+}
 
+void findNeighbouringMines(){
+  for (int x=0; x<cols; x++) {
+    for (int y=0; y<rows; y++) {
+      if (board[x][y] != 7){
+        
+        
+        
+        
 
-void drawMines(int mineX, int mineY){
+      }
+    }
+  }
   
-  
-  
-  
-  println(mineX, mineY);
-  fill(255);
-
+        
   
   
   
