@@ -107,34 +107,71 @@ void findNeighbouringMines(){
           if (board[x+1][y+1] == 7) mineCounter++;
         }
         
-        if(x == cols && y == 0) {//top right corner
+        else if(x == cols && y == 0) {//top right corner
           if (board[x-1][y] == 7) mineCounter++;
           if (board[x-1][y+1] == 7) mineCounter++;
           if (board[x][y+1] == 7) mineCounter++;
         }
         
-        if(x == cols && y == rows){//bottom right corner
+        else if(x == cols && y == rows){//bottom right corner
           if (board[x-1][y-1] == 7) mineCounter++;
           if (board[x-1][y] == 7) mineCounter++;
           if (board[x][y-1] == 7) mineCounter++;
         }
         
-        if(x == 0 && y == rows){//bottom left corner
+        else if(x == 0 && y == rows){//bottom left corner
           if (board[x][y-1] == 7) mineCounter++;
           if (board[x+1][y-1] == 7) mineCounter++;
           if (board[x+1][y] == 7) mineCounter++; 
         }
         
-        else{
+        else if(x == 0 && (y > 0 && y < rows)){//left side
           if (board[x][y-1] == 7) mineCounter++;
-          if (board[x-1][y-1] == 7) mineCounter++;
           if (board[x+1][y-1] == 7) mineCounter++;
+          if (board[x+1][y] == 7) mineCounter++;
+          if (board[x][y+1] == 7) mineCounter++;
+          if (board[x+1][y+1] == 7) mineCounter++;       
+        }
+        
+        else if(y == 0 && (x > 0 && x < cols)){//top side
           if (board[x-1][y] == 7) mineCounter++;
           if (board[x+1][y] == 7) mineCounter++;
           if (board[x-1][y+1] == 7) mineCounter++;
           if (board[x][y+1] == 7) mineCounter++;
           if (board[x+1][y+1] == 7) mineCounter++;
         }
+        
+        else if(x == cols && (y > 0 && y < rows)){//right side
+          if (board[x][y-1] == 7) mineCounter++;
+          if (board[x-1][y-1] == 7) mineCounter++;
+          if (board[x-1][y] == 7) mineCounter++;
+          if (board[x-1][y+1] == 7) mineCounter++;
+          if (board[x][y+1] == 7) mineCounter++;        
+        }
+          
+        else if(y == rows && (x > 0 && x < cols)){//bottom side
+          if (board[x][y-1] == 7) mineCounter++;
+          if (board[x-1][y-1] == 7) mineCounter++;
+          if (board[x+1][y-1] == 7) mineCounter++;
+          if (board[x-1][y] == 7) mineCounter++;
+          if (board[x+1][y] == 7) mineCounter++;
+        
+        
+        }
+        
+        
+        
+        
+        //else {
+        //  if (board[x][y-1] == 7) mineCounter++;
+        //  if (board[x-1][y-1] == 7) mineCounter++;
+        //  if (board[x+1][y-1] == 7) mineCounter++;
+        //  if (board[x-1][y] == 7) mineCounter++;
+        //  if (board[x+1][y] == 7) mineCounter++;
+        //  if (board[x-1][y+1] == 7) mineCounter++;
+        //  if (board[x][y+1] == 7) mineCounter++;
+        //  if (board[x+1][y+1] == 7) mineCounter++;
+        //}
         
         board[x][y] = mineCounter;
         
