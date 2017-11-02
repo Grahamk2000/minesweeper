@@ -8,6 +8,7 @@ int cols, rows;
 float cellWidth, cellHeight;
 int mineY;
 int mineX;
+int mineCounter = 0;
 
 
 void setup(){
@@ -18,8 +19,9 @@ void setup(){
  cellWidth = width/cols;
  cellHeight = height/rows;
  board = new int[cols][rows];
- neighbours = new int[8];
+ //neighbours = new int[8];
  placeMines();
+ findNeighbouringMines();
 
   
 }
@@ -27,9 +29,10 @@ void setup(){
 
 
 void draw(){
- drawBoard();
+
+  drawBoard();
  //placeMines();
- findNeighbouringMines();
+
 
   
 }
@@ -43,6 +46,25 @@ void drawBoard(){
     fill(255);
     rect(x*cellWidth, y*cellHeight, cellWidth, cellHeight);
       }
+      if(board[x][y] == 1){
+        fill(255, 0, 0);
+        rect(x*cellWidth, y*cellHeight, cellWidth, cellHeight);
+        
+      }
+      
+      if(board[x][y] == 2){
+        fill(0, 0, 255);
+        rect(x*cellWidth, y*cellHeight, cellWidth, cellHeight);
+        
+      }
+      
+      if(board[x][y] == 3){
+        fill(255, 0, 255);
+        rect(x*cellWidth, y*cellHeight, cellWidth, cellHeight);
+        
+      }      
+      
+      
   }
   }
   
@@ -74,7 +96,52 @@ void drawMines(){
 void findNeighbouringMines(){
   for (int x=0; x<cols; x++) {
     for (int y=0; y<rows; y++) {
+      
+      mineCounter = 0;
+      
       if (board[x][y] != 7){
+        
+        if (x == 0 && y == 0) {//top left corner
+          if (board[x+1][y] == 7) mineCounter++;
+          if (board[x][y+1] == 7) mineCounter++;
+          if (board[x+1][y+1] == 7) mineCounter++;
+        }
+        
+        if(x == cols && y == 0) {//top right corner
+          if (board[x-1][y] == 7) mineCounter++;
+          if (board[x-1][y+1] == 7) mineCounter++;
+          if (board[x][y+1] == 7) mineCounter++;
+        }
+        
+        if(x == cols && y == rows){//bottom right corner
+          if (board[x-1][y-1] == 7) mineCounter++;
+          if (board[x-1][y] == 7) mineCounter++;
+          if (board[x][y-1] == 7) mineCounter++;
+        }
+        
+        if(x == 0 && y == rows){//bottom left corner
+          if (board[x][y-1] == 7) mineCounter++;
+          if (board[x+1][y-1] == 7) mineCounter++;
+          if (board[x+1][y] == 7) mineCounter++; 
+        }
+        
+        else{
+          if (board[x][y-1] == 7) mineCounter++;
+          if (board[x-1][y-1] == 7) mineCounter++;
+          if (board[x+1][y-1] == 7) mineCounter++;
+          if (board[x-1][y] == 7) mineCounter++;
+          if (board[x+1][y] == 7) mineCounter++;
+          if (board[x-1][y+1] == 7) mineCounter++;
+          if (board[x][y+1] == 7) mineCounter++;
+          if (board[x+1][y+1] == 7) mineCounter++;
+        }
+        
+        board[x][y] = mineCounter;
+        
+        println(mineCounter);
+        
+        
+    
         
         
         
