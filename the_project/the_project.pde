@@ -412,19 +412,15 @@ void youClickedOnAZero(){
           board[x+1][y+1] = 20; }
           
      displayZeros();   
-     //if(board[x][y] == 20){
-      
-     // fill(255);
-     // rect(x*cellWidth, y*cellHeight, cellWidth, cellHeight);
-     // fill(0);
-     // textSize(32);
-     // text('0', (x*cellWidth + (cellWidth/2)), (y*cellHeight + (cellHeight/2)));}
+
       
   if (neighbouringZeros != 0){
         youClickedOnAZero();
-      }
-        
-        
+  if (neighbouringZeros == 0){
+    displayCellsNextToZeros();
+    
+  }
+      }     
   }
   
     }
@@ -447,6 +443,118 @@ void displayZeros(){
   }
   
 }
+
+void displayCellsNextToZeros(){
+  for (int x=0; x<cols; x++) {
+    for (int y=0; y<rows; y++) {
+      
+      if (board[x][y] != 20 && board[x][y] != 9) {
+  
+  
+        if (x == 0 && y == 0) {//top left corner
+          if (board[x+1][y] == 20) mineCounter++;
+          if (board[x][y+1] == 20) mineCounter++;
+          if (board[x+1][y+1] == 20) mineCounter++;
+        }
+        
+        else if(x == cols-1 && y == 20) {//top right corner
+          if (board[x-1][y] == 20) mineCounter++;
+          if (board[x-1][y+1] == 20) mineCounter++;
+          if (board[x][y+1] == 20) mineCounter++;
+        }
+        
+        else if(x == cols-1 && y == rows-1){//bottom right corner
+          if (board[x-1][y-1] == 20) mineCounter++;
+          if (board[x-1][y] == 20) mineCounter++;
+          if (board[x][y-1] == 20) mineCounter++;
+        }
+        
+        else if(x == 0 && y == rows-1){//bottom left corner
+          if (board[x][y-1] == 20) mineCounter++;
+          if (board[x+1][y-1] == 20) mineCounter++;
+          if (board[x+1][y] == 20) mineCounter++; 
+        }
+        
+        else if(x == 0 && (y > 0 && y < rows-1)){//left side
+          if (board[x][y-1] == 20) mineCounter++;
+          if (board[x+1][y-1] == 20) mineCounter++;
+          if (board[x+1][y] == 20) mineCounter++;
+          if (board[x][y+1] == 20) mineCounter++;
+          if (board[x+1][y+1] == 20) mineCounter++;       
+        }
+        
+        else if(y == 0 && (x > 0 && x < cols-1)){//top side
+          if (board[x-1][y] == 20) mineCounter++;
+          if (board[x+1][y] == 20) mineCounter++;
+          if (board[x-1][y+1] == 20) mineCounter++;
+          if (board[x][y+1] == 20) mineCounter++;
+          if (board[x+1][y+1] == 20) mineCounter++;
+        }
+        
+        else if(x == cols-1 && (y > 0 && y < rows-1)){//right side
+          if (board[x][y-1] == 20) mineCounter++;
+          if (board[x-1][y-1] == 20) mineCounter++;
+          if (board[x-1][y] == 20) mineCounter++;
+          if (board[x-1][y+1] == 20) mineCounter++;
+          if (board[x][y+1] == 20) mineCounter++;        
+        }
+          
+        else if(y == rows-1 && (x > 0 && x < cols-1)){//bottom side
+          if (board[x][y-1] == 20) mineCounter++;
+          if (board[x-1][y-1] == 20) mineCounter++;
+          if (board[x+1][y-1] == 20) mineCounter++;
+          if (board[x-1][y] == 20) mineCounter++;
+          if (board[x+1][y] == 20) mineCounter++;
+        }
+        
+        else {
+          if (board[x][y-1] == 20){
+            board[x][y] = board[x][y] + 20;
+          }
+          if (board[x-1][y-1] == 20){
+            board[x][y] = board[x][y] + 20;
+          }
+          if (board[x+1][y-1] == 20){
+            board[x][y] = board[x][y] + 20;}
+          if (board[x-1][y] == 20) {
+            board[x][y] = board[x][y] + 20;}
+          if (board[x+1][y] == 20) {
+            board[x][y] = board[x][y] + 20;}
+          if (board[x-1][y+1] == 20){
+            board[x][y] = board[x][y] + 20;}
+          if (board[x][y+1] == 20) {
+            board[x][y] = board[x][y] + 20;}
+          if (board[x+1][y+1] == 20){ 
+            board[x][y] = board[x][y] + 20;}
+            
+            
+        }
+        
+        
+        
+      }
+    }
+  }
+  
+  for (int x=0; x<cols; x++) {
+    for (int y=0; y<rows; y++) {
+  
+  
+      if (board[x][y] != 9 &&  board[x][y] != 0   &&  board[x][y] != 20){
+        fill(255);
+        textAlign(CENTER, CENTER);
+        rect(x*cellWidth, y*cellHeight, cellWidth, cellHeight);
+        
+        fill(cellColour[board[x][y] - 20]);
+        rect(x*cellWidth, y*cellHeight, cellWidth, cellHeight);
+        fill(0);
+        textSize(32);
+        text((board[x][y] - 20), (x*cellWidth + (cellWidth/2)), (y*cellHeight + (cellHeight/2)));
+      }
+    }
+  }
+}
+  
 
 
 void displayClickedCell() {
