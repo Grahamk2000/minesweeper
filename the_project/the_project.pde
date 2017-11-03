@@ -15,6 +15,7 @@ int numberOfMinesPlaced = 0;
 int state;
 int x;
 int y;
+int neighbouringZeros = 0;
 
 void setup(){
  size (600, 600);
@@ -24,10 +25,10 @@ void setup(){
  cellWidth = width/cols;
  cellHeight = height/rows;
  board = new int[cols][rows];
- //cellColour = new int[8];
  placeMines();
  findNeighbouringMines();
  drawBoard();
+ 
  
 
   
@@ -238,6 +239,80 @@ void findNeighbouringMines(){
   //board[xCord][yCord] = 8;
 //}
 void youClickedOnAZero(){
+  int xCord = int(mouseX/cellWidth);
+  int yCord = int(mouseY/cellHeight);
+  
+
+  
+  
+  if (x == 0 && y == 0) {//top left corner
+  if (board[x+1][y] == 9) neighbouringZeros++;
+  if (board[x][y+1] == 9) neighbouringZeros++;
+  if (board[x+1][y+1] == 9) neighbouringZeros++;
+  }
+  
+  else if(x == cols-1 && y == 0) {//top right corner
+    if (board[x-1][y] == 9) neighbouringZeros++;
+    if (board[x-1][y+1] == 9) neighbouringZeros++;
+    if (board[x][y+1] == 9) neighbouringZeros++;
+  }
+  
+  else if(x == cols-1 && y == rows-1){//bottom right corner
+    if (board[x-1][y-1] == 9) neighbouringZeros++;
+    if (board[x-1][y] == 9) neighbouringZeros++;
+    if (board[x][y-1] == 9) neighbouringZeros++;
+  }
+  
+  else if(x == 0 && y == rows-1){//bottom left corner
+    if (board[x][y-1] == 9) neighbouringZeros++;
+    if (board[x+1][y-1] == 9) neighbouringZeros++;
+    if (board[x+1][y] == 9) neighbouringZeros++; 
+  }
+  
+  else if(x == 0 && (y > 0 && y < rows-1)){//left side
+    if (board[x][y-1] == 9) neighbouringZeros++;
+    if (board[x+1][y-1] == 9) neighbouringZeros++;
+    if (board[x+1][y] == 9) neighbouringZeros++;
+    if (board[x][y+1] == 9) neighbouringZeros++;
+    if (board[x+1][y+1] == 9) neighbouringZeros++;       
+  }
+  
+  else if(y == 0 && (x > 0 && x < cols-1)){//top side
+    if (board[x-1][y] == 9) neighbouringZeros++;
+    if (board[x+1][y] == 9) neighbouringZeros++;
+    if (board[x-1][y+1] == 9) neighbouringZeros++;
+    if (board[x][y+1] == 9) neighbouringZeros++;
+    if (board[x+1][y+1] == 9) neighbouringZeros++;
+  }
+  
+  else if(x == cols-1 && (y > 0 && y < rows-1)){//right side
+    if (board[x][y-1] == 9) neighbouringZeros++;
+    if (board[x-1][y-1] == 9) neighbouringZeros++;
+    if (board[x-1][y] == 9) neighbouringZeros++;
+    if (board[x-1][y+1] == 9) neighbouringZeros++;
+    if (board[x][y+1] == 9) neighbouringZeros++;        
+  }
+    
+  else if(y == rows-1 && (x > 0 && x < cols-1)){//bottom side
+    if (board[x][y-1] == 9) neighbouringZeros++;
+    if (board[x-1][y-1] == 9) neighbouringZeros++;
+    if (board[x+1][y-1] == 9) neighbouringZeros++;
+    if (board[x-1][y] == 9) neighbouringZeros++;
+    if (board[x+1][y] == 9) neighbouringZeros++;
+  }
+  
+  else {
+    if (board[x][y-1] == 9) neighbouringZeros++;
+    if (board[x-1][y-1] == 9) neighbouringZeros++;
+    if (board[x+1][y-1] == 9) neighbouringZeros++;
+    if (board[x-1][y] == 9) neighbouringZeros++;
+    if (board[x+1][y] == 9) neighbouringZeros++;
+    if (board[x-1][y+1] == 9) neighbouringZeros++;
+    if (board[x][y+1] == 9) neighbouringZeros++;
+    if (board[x+1][y+1] == 9) neighbouringZeros++;
+  }
+  
+  
   
   
 }
@@ -247,7 +322,7 @@ void displayClickedCell() {
   int yCord = int(mouseY/cellHeight);
   if (mouseButton == LEFT){
     x = xCord;
-    y = yCord;;
+    y = yCord;
   
     if (board[x][y] == 9){
       state = 2;
@@ -255,6 +330,7 @@ void displayClickedCell() {
      
      
     if (board[x][y] == 0){
+      board[x][y] = 20;
       youClickedOnAZero();
     }
     else {
