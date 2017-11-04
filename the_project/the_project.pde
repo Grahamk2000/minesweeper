@@ -3,14 +3,14 @@
 
 //globals
 int[][] board;
-color[] cellColour = {color(255, 0, 0), color(255, 0, 100), color(255, 150, 100), color(150, 0, 100), color(100, 200, 100),
+color[] cellColour = {color(0, 0, 0), color(255, 0, 100), color(255, 150, 100), color(150, 0, 100), color(100, 200, 100),
                       color(50, 0, 50), color(15, 60, 170), color(255, 0, 255), color(0) };
 int cols, rows;
 float cellWidth, cellHeight;
 int mineY;
 int mineX;
 int mineCounter = 0;
-int numberOfMines = 10;
+int numberOfMines = 40;
 int numberOfMinesPlaced = 0;
 int state;
 int x;
@@ -19,10 +19,10 @@ int neighbouringZeros = 0;
 boolean nextToAZero = false;
 
 void setup(){
- size (600, 600);
+ size (700, 700);
  background(255);
- cols = 10;
- rows = 10;
+ cols = 13;
+ rows = 13;
  cellWidth = width/cols;
  cellHeight = height/rows;
  board = new int[cols][rows];
@@ -43,13 +43,13 @@ void draw(){
     fill(255);
     rect(x*cellWidth, y*cellHeight, cellWidth, cellHeight);
     fill(0);
-    textSize(32);
+    textSize(cellWidth/2);
     text('0', (x*cellWidth + (cellWidth/2)), (y*cellHeight + (cellHeight/2)));
   }
   
   displayClickedCell();
 
- //placeMines();
+
  whatIsTheState();
 
 
@@ -77,28 +77,6 @@ void drawBoard(){
       fill(150, 150, 150);
       rect(x*cellWidth, y*cellHeight, cellWidth, cellHeight);
       
-      
-      //if (board[x][y] != 9 &&  board[x][y] != 0  && board[x][y] != 15){
-      //  fill(255);
-      //  textAlign(CENTER, CENTER);
-      //  rect(x*cellWidth, y*cellHeight, cellWidth, cellHeight);
-        
-        //fill(cellColour[board[x][y]]);
-        //rect(x*cellWidth, y*cellHeight, cellWidth, cellHeight);
-        //fill(0);
-        //textSize(32);
-        //text((board[x][y]), (x*cellWidth + (cellWidth/2)), (y*cellHeight + (cellHeight/2)));
-      //}
-    
-      //if (board[x][y] == 15){
-      //  fill(0);
-      //  text("FLAG", (x*cellWidth + (cellWidth/2)), (y*cellHeight + (cellHeight/2)));
-      //}
-        
-    
-    
-     
-
       
  
   }
@@ -437,7 +415,7 @@ void displayZeros(){
         fill(255);
         rect(x*cellWidth, y*cellHeight, cellWidth, cellHeight);
         fill(0);
-        textSize(32);
+        textSize(cellWidth/2);
         text('0', (x*cellWidth + (cellWidth/2)), (y*cellHeight + (cellHeight/2)));}
     }
   }
@@ -449,8 +427,7 @@ void displayCellsNextToZeros(){
     for (int y=0; y<rows; y++) {
       nextToAZero = false;
       if (board[x][y] != 20 && board[x][y] != 9) {
-        //if ((board[x][y] == 1 )|| (board[x][y] == 2) || (board[x][y] == 3) || (board[x][y] == 4) ||( board[x][y] == 5) || (board[x][y] == 6) || (board[x][y] == 7) || (board[x][y] == 8 )){
-  
+        
         if (x == 0 && y == 0) {//top left corner
           if (board[x+1][y] == 20) {
             nextToAZero = true;}
@@ -562,31 +539,14 @@ void displayCellsNextToZeros(){
         fill(cellColour[(board[x][y])]);
         rect(x*cellWidth, y*cellHeight, cellWidth, cellHeight);
         fill(0);
-        textSize(32);
+        textSize(cellWidth/2);
         text(board[x][y], (x*cellWidth + (cellWidth/2)), (y*cellHeight + (cellHeight/2)));}
         
         
       }
     }
   }
-  
-  //for (int x=0; x<cols; x++) {
-  //  for (int y=0; y<rows; y++) {
-  
-  
-  //    if (board[x][y] != 9 &&  board[x][y] != 0   &&  board[x][y] != 20){
-  //      fill(255);
-  //      textAlign(CENTER, CENTER);
-  //      rect(x*cellWidth, y*cellHeight, cellWidth, cellHeight);
-        
-  //      //fill(cellColour[(board[x][y] - 20)]);
-  //      rect(x*cellWidth, y*cellHeight, cellWidth, cellHeight);
-  //      fill(0);
-  //      textSize(32);
-  //      text((board[x][y] - 20), (x*cellWidth + (cellWidth/2)), (y*cellHeight + (cellHeight/2)));
-  //    }
-  //  }
-  //}
+
 }
   
 
@@ -594,9 +554,21 @@ void displayCellsNextToZeros(){
 void displayClickedCell() {
   int xCord = int(mouseX/cellWidth);
   int yCord = int(mouseY/cellHeight);
+   x = xCord;
+   y = yCord;
+  if (mouseButton == RIGHT){
+    //if get();
+    fill(252, 114, 0);
+    rect(x*cellWidth, y*cellHeight, cellWidth, cellHeight);
+    fill(0);
+    textSize(cellWidth/2);
+    text("FLAG", (x*cellWidth + (cellWidth/2)), (y*cellHeight + (cellHeight/2)));
+    
+  }
+  
+  
   if (mouseButton == LEFT){
-    x = xCord;
-    y = yCord;
+
   
    if (board[x][y] == 9){
       state = 2;
@@ -609,7 +581,7 @@ void displayClickedCell() {
     
       youClickedOnAZero();
     }
-    
+   
     
     
     else {
@@ -617,7 +589,7 @@ void displayClickedCell() {
         fill(cellColour[board[x][y]]);
         rect(x*cellWidth, y*cellHeight, cellWidth, cellHeight);
         fill(0);
-        textSize(32);
+        textSize(cellWidth/2);
         text((board[x][y]), (x*cellWidth + (cellWidth/2)), (y*cellHeight + (cellHeight/2)));
       }
       
