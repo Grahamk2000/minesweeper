@@ -3,14 +3,14 @@
 
 //globals
 int[][] board;
-color[] cellColour = {color(0, 0, 0), color(255, 0, 100), color(255, 150, 100), color(150, 0, 100), color(100, 200, 100),
+color[] cellColour = {color(255, 255, 255), color(255, 0, 100), color(255, 150, 100), color(150, 0, 100), color(100, 200, 100),
                       color(50, 0, 50), color(15, 60, 170), color(255, 0, 255), color(0) };
 int cols, rows;
 float cellWidth, cellHeight;
 int mineY;
 int mineX;
 int mineCounter = 0;
-int numberOfMines = 40;
+int numberOfMines;
 int numberOfMinesPlaced = 0;
 int state;
 int x;
@@ -18,14 +18,16 @@ int y;
 int neighbouringZeros = 0;
 boolean nextToAZero = false;
 
+
 void setup(){
  size (700, 700);
  background(255);
  cols = 13;
  rows = 13;
+ numberOfMines = ((cols * rows)/7);
  cellWidth = width/cols;
  cellHeight = height/rows;
- board = new int[cols][rows];
+ board = new int[cols + 1][rows + 1];
  placeMines();
  findNeighbouringMines();
  drawBoard();
@@ -65,7 +67,7 @@ void whatIsTheState() {
     fill(255, 0, 0);
     rect(0, 0, width, height);
     fill(0);
-    text("YOU PROBABLY DIED", width/2, height/2);
+    text("): YOU'RE DEAD :(", width/2, height/2);
   }
 }
 
@@ -82,7 +84,6 @@ void drawBoard(){
   }
   }
   
-  //drawMines();
 }
   
 void placeMines(){
@@ -202,7 +203,7 @@ void findNeighbouringMines(){
 
 void youClickedOnAZero(){
 
-  neighbouringZeros = 0;  
+//  neighbouringZeros = 0;  
   for (int x=0; x<cols; x++) {
     for (int y=0; y<rows; y++) {
 
@@ -227,7 +228,7 @@ void youClickedOnAZero(){
         }     
     }
       
-      else if(x == cols-1 && y == 0) {//top right corner
+      else if(x == cols && y == 0) {//top right corner
         if (board[x-1][y] == 0){
           neighbouringZeros++;
           board[x-1][y] = 20;
@@ -242,7 +243,7 @@ void youClickedOnAZero(){
         }
       }
       
-      else if(x == cols-1 && y == rows-1){//bottom right corner
+      else if(x == cols && y == rows){//bottom right corner
         if (board[x-1][y-1] == 0){
           neighbouringZeros++;
           board[x-1][y-1] = 20;
@@ -257,7 +258,7 @@ void youClickedOnAZero(){
         }
       }
       
-      else if(x == 0 && y == rows-1){//bottom left corner
+      else if(x == 0 && y == rows){//bottom left corner
         if (board[x][y-1] == 0){
           neighbouringZeros++;
           board[x][y-1] = 20;
@@ -272,7 +273,7 @@ void youClickedOnAZero(){
         }
       }
       
-      else if(x == 0 && (y > 0 && y < rows-1)){//left side
+      else if(x == 0 && (y > 0 && y < rows)){//left side
         if (board[x][y-1] == 0){
           neighbouringZeros++;
           board[x][y-1] = 20;
@@ -295,7 +296,7 @@ void youClickedOnAZero(){
         }
       }
       
-      else if(y == 0 && (x > 0 && x < cols-1)){//top side
+      else if(y == 0 && (x > 0 && x < cols)){//top side
         if (board[x-1][y] == 0){
           neighbouringZeros++;
           board[x-1][y] = 20;
@@ -318,7 +319,7 @@ void youClickedOnAZero(){
         }
       }
       
-      else if(x == cols-1 && (y > 0 && y < rows-1)){//right side
+      else if(x == cols && (y > 0 && y < rows)){//right side
         if (board[x][y-1] == 0){
           neighbouringZeros++;
           board[x][y-1] = 20;
@@ -341,7 +342,7 @@ void youClickedOnAZero(){
         }
       }
         
-      else if(y == rows-1 && (x > 0 && x < cols-1)){//bottom side
+      else if(y == rows && (x > 0 && x < cols)){//bottom side
         if (board[x][y-1] == 0){
           neighbouringZeros++;
           board[x][y-1] = 20;
@@ -394,8 +395,12 @@ void youClickedOnAZero(){
 
       
   if (neighbouringZeros != 0){
-        youClickedOnAZero();}
+    
+    neighbouringZeros = 0;  
+    youClickedOnAZero();}
+    
   if (neighbouringZeros == 0){
+    
     displayCellsNextToZeros();}
     
   }
@@ -437,7 +442,7 @@ void displayCellsNextToZeros(){
             nextToAZero = true;}
         }
         
-        else if(x == cols-1 && y == 0) {//top right corner
+        else if(x == cols && y == 0) {//top right corner
           if (board[x-1][y] == 20) {
             nextToAZero = true;}
           if (board[x-1][y+1] == 20) {
@@ -446,7 +451,7 @@ void displayCellsNextToZeros(){
             nextToAZero = true;}
         }
         
-        else if(x == cols-1 && y == rows-1){//bottom right corner
+        else if(x == cols && y == rows){//bottom right corner
           if (board[x-1][y-1] == 20) {
             nextToAZero = true;}
           if (board[x-1][y] == 20) {
@@ -455,7 +460,7 @@ void displayCellsNextToZeros(){
             nextToAZero = true;}
         }
         
-        else if(x == 0 && y == rows-1){//bottom left corner
+        else if(x == 0 && y == rows){//bottom left corner
           if (board[x][y-1] == 20){
             nextToAZero = true;}
           if (board[x+1][y-1] == 20){
@@ -464,7 +469,7 @@ void displayCellsNextToZeros(){
             nextToAZero = true;}
         }
         
-        else if(x == 0 && (y > 0 && y < rows-1)){//left side
+        else if(x == 0 && (y > 0 && y < rows)){//left side
           if (board[x][y-1] == 20) {
             nextToAZero = true;}
           if (board[x+1][y-1] == 20){
@@ -477,7 +482,7 @@ void displayCellsNextToZeros(){
             nextToAZero = true;}
         }
         
-        else if(y == 0 && (x > 0 && x < cols-1)){//top side
+        else if(y == 0 && (x > 0 && x < cols)){//top side
           if (board[x-1][y] == 20) {
             nextToAZero = true;}
           if (board[x+1][y] == 20) {
@@ -490,7 +495,7 @@ void displayCellsNextToZeros(){
             nextToAZero = true;}
         }
         
-        else if(x == cols-1 && (y > 0 && y < rows-1)){//right side
+        else if(x == cols && (y > 0 && y < rows)){//right side
           if (board[x][y-1] == 20) {
             nextToAZero = true;}
           if (board[x-1][y-1] == 20){
@@ -503,7 +508,7 @@ void displayCellsNextToZeros(){
             nextToAZero = true;}
         }
           
-        else if(y == rows-1 && (x > 0 && x < cols-1)){//bottom side
+        else if(y == rows && (x > 0 && x < cols)){//bottom side
           if (board[x][y-1] == 20){
             nextToAZero = true;}
           if (board[x-1][y-1] == 20) {
@@ -516,7 +521,7 @@ void displayCellsNextToZeros(){
             nextToAZero = true;}
         }
         
-        else if (y != 0 && y != rows-1 && x != 0 && x!= cols-1){
+        else if (y != 0 && y != rows && x != 0 && x!= cols){
           if (board[x][y-1] == 20){
             nextToAZero = true;}
           if (board[x-1][y-1] == 20){
@@ -557,12 +562,13 @@ void displayClickedCell() {
    x = xCord;
    y = yCord;
   if (mouseButton == RIGHT){
-    //if get();
-    fill(252, 114, 0);
-    rect(x*cellWidth, y*cellHeight, cellWidth, cellHeight);
-    fill(0);
-    textSize(cellWidth/2);
-    text("FLAG", (x*cellWidth + (cellWidth/2)), (y*cellHeight + (cellHeight/2)));
+    if (get(mouseX, mouseY) == color(150, 150, 150)){
+      fill(252, 114, 0);
+      rect(x*cellWidth, y*cellHeight, cellWidth, cellHeight);
+      fill(0);
+      textSize(cellWidth/3);
+      text("FLAG", (x*cellWidth + (cellWidth/2)), (y*cellHeight + (cellHeight/2)));
+    }
     
   }
   
