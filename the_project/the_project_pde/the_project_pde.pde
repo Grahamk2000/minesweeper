@@ -13,7 +13,7 @@ float cellWidth, cellHeight;
 int mineY;
 int mineX;
 int mineCounter = 0;
-int numberOfMines = 15;
+int numberOfMines = 10;
 int numberOfMinesPlaced = 0;
 int state;
 int x;
@@ -378,9 +378,7 @@ void youClickedOnAZero(){
         if (board[x+1][y-1] == 0){
           neighbouringZeros++;
           board[x+1][y-1] = 20; }
-        if (board[x-1][y] == 0){
-          neighbouringZeros++;
-          board[x-1][y] = 20; }
+        
         if (board[x-1][y] == 0){
           neighbouringZeros++;
           board[x-1][y] = 20; }
