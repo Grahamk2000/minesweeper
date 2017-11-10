@@ -13,22 +13,30 @@ float cellWidth, cellHeight;
 int mineY;
 int mineX;
 int mineCounter = 0;
-int numberOfMines = 10;
+int numberOfMines;
 int numberOfMinesPlaced = 0;
 int state;
 int x;
 int y;
 int neighbouringZeros = 0;
 boolean nextToAZero = false;
+int numberOfCells;
+int numberOfCellsDisplayed ;
+int greyCellsRemaining;
+color grey = color(150);
 
 void setup(){
  size (600, 600);
  background(255);
  cols = 15;
  rows = cols;
+ numberOfMines = ((rows * cols)/7);
+ 
  cellWidth = width/cols;
  cellHeight = height/rows;
+
  board = new int[cols][rows];
+ numberOfCells = cols * rows;
  placeMines();
  findNeighbouringMines();
  drawBoard();
@@ -41,16 +49,9 @@ void setup(){
 
 
 void draw(){
-  //if(board[x][y] == 20){
-
-  //  fill(255);
-  //  rect(x*cellWidth, y*cellHeight, cellWidth, cellHeight);
-  //  fill(0);
-  //  textSize(32);
-  //  text('0', (x*cellWidth + (cellWidth/2)), (y*cellHeight + (cellHeight/2)));
-  //}
-  
+ 
  displayClickedCell();
+ howManyCellsHaveBeenDisplayed();
 
  whatIsTheState();
 
@@ -69,6 +70,11 @@ void whatIsTheState() {
     fill(0);
     text("YOU PROBABLY DIED", width/2, height/2);
   }
+  if (numberOfCellsDisplayed == numberOfCells){
+    state = 3; // game won
+    
+  }
+  
 }
 
 
@@ -76,7 +82,7 @@ void drawBoard(){
   strokeWeight(6);
   for (int x=0; x<cols; x++) {
     for (int y=0; y<rows; y++) {
-      fill(150, 150, 150);
+      fill(grey);
       rect(x*cellWidth, y*cellHeight, cellWidth, cellHeight);
       
      
@@ -86,7 +92,7 @@ void drawBoard(){
   }
   }
   
-  //drawMines();
+
 }
   
 void placeMines(){
@@ -431,6 +437,7 @@ void displayZeros(){
     for (int y=0; y<rows; y++) {
 
       if(board[x][y] == 20){
+        numberOfCellsDisplayed++;
         fill(255);
         rect(x*cellWidth, y*cellHeight, cellWidth, cellHeight);
         fill(0);
@@ -446,8 +453,7 @@ void displayCellsNextToZeros(){
     for (int y=0; y<rows; y++) {
       nextToAZero = false;
       if (board[x][y] != 20 && board[x][y] != 9) {
-        //if ((board[x][y] == 1 )|| (board[x][y] == 2) || (board[x][y] == 3) || (board[x][y] == 4) ||( board[x][y] == 5) || (board[x][y] == 6) || (board[x][y] == 7) || (board[x][y] == 8 )){
-  
+        
         if (x == 0 && y == 0) {//top left corner
           if (board[x+1][y] == 20) {
             nextToAZero = true;}
@@ -536,7 +542,7 @@ void displayCellsNextToZeros(){
             nextToAZero = true;}
         }
         
-        else if (y != 0 && y != rows-1 && x != 0 && x!= cols-1){
+        else {
           if (board[x][y-1] == 20){
             nextToAZero = true;}
           if (board[x-1][y-1] == 20){
@@ -556,6 +562,7 @@ void displayCellsNextToZeros(){
         }
         
         if(nextToAZero == true){
+
         fill(cellColour[(board[x][y])]);
         rect(x*cellWidth, y*cellHeight, cellWidth, cellHeight);
         fill(0);
@@ -567,23 +574,7 @@ void displayCellsNextToZeros(){
     }
   }
   
-  //for (int x=0; x<cols; x++) {
-  //  for (int y=0; y<rows; y++) {
-  
-  
-  //    if (board[x][y] != 9 &&  board[x][y] != 0   &&  board[x][y] != 20){
-  //      fill(255);
-  //      textAlign(CENTER, CENTER);
-  //      rect(x*cellWidth, y*cellHeight, cellWidth, cellHeight);
-        
-  //      //fill(cellColour[(board[x][y] - 20)]);
-  //      rect(x*cellWidth, y*cellHeight, cellWidth, cellHeight);
-  //      fill(0);
-  //      textSize(32);
-  //      text((board[x][y] - 20), (x*cellWidth + (cellWidth/2)), (y*cellHeight + (cellHeight/2)));
-  //    }
-  //  }
-  //}
+ 
 }
   
 
@@ -625,4 +616,28 @@ void displayClickedCell() {
     
   }
   
+}
+
+
+
+
+
+void howManyCellsHaveBeenDisplayed(){
+  numberOfCellsDisplayed = 0;
+  for (int x=0; x<cols; x++) {
+    for (int y=0; y<rows; y++) {
+      
+      if( get((int(cellWidth) * x) + 20, (int(cellHeight) * y) + 20) != color(150)){
+        numberOfCellsDisplayed++;
+        
+      }
+      
+
+      
+      
+      
+    }
+  }
+  
+  println ("number of cells displayed", numberOfCellsDisplayed );
 }
