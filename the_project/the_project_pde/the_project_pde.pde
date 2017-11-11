@@ -3,6 +3,9 @@
 
 // can you see this
 
+//unsolved issued
+  //clicking a zero on right side has no effect
+
 
 //globals
 int[][] board;
@@ -28,7 +31,7 @@ color grey = color(150);
 void setup(){
  size (600, 600);
  background(255);
- cols = 15;
+ cols = 8;
  rows = cols;
  numberOfMines = ((rows * cols)/7);
  
@@ -36,7 +39,7 @@ void setup(){
  cellHeight = height/rows;
 
  board = new int[cols][rows];
- numberOfCells = cols * rows;
+ numberOfCells = (cols * rows) - numberOfMines;
  placeMines();
  findNeighbouringMines();
  drawBoard();
@@ -50,10 +53,13 @@ void setup(){
 
 void draw(){
  
+  whatIsTheState();
+if (state == 1){  
  displayClickedCell();
+ //whatIsTheState();
  howManyCellsHaveBeenDisplayed();
+}
 
- whatIsTheState();
 
 
 
@@ -62,18 +68,44 @@ void draw(){
 }
 
 void whatIsTheState() {
+  
+  if (state != 2){
+    if (numberOfCellsDisplayed < numberOfCells){
+      state = 1;
+    }
+  }
+  
+  
   if (state == 2){
-    textSize(32);
+    textSize(width/12);
 
-    fill(255, 0, 0);
-    rect(0, 0, width, height);
-    fill(0);
-    text("YOU PROBABLY DIED", width/2, height/2);
+    drawMines();
+    
   }
   if (numberOfCellsDisplayed == numberOfCells){
     state = 3; // game won
     
   }
+  if (state == 3){
+    println("hey you just won");
+    //fill(20, 255, 60);
+    //rect(0, 0, width, height);
+    fill(0, 255, 0);
+    textSize(width/6);
+    text("YOU WIN", width/2, height/2);
+    for (int x=0; x<cols; x++) {
+      for (int y=0; y<rows; y++) {
+        if (board[x][y] == 9){
+          
+        }
+        
+        
+      }
+    }
+    
+    
+  }
+  
   
 }
 
@@ -116,8 +148,10 @@ void drawMines(){
   for (int x=0; x<cols; x++) {
     for (int y=0; y<rows; y++) {
       if (board[x][y] == 9){
-        fill(0, 255, 0);
+        fill(255, 0, 0);
         rect(x*cellWidth, y*cellHeight, cellWidth, cellHeight);
+        fill(0);
+        text("X",  (x*cellWidth + (cellWidth/2)), (y*cellHeight + (cellHeight/2)));
         
       }
     }
@@ -631,7 +665,9 @@ void howManyCellsHaveBeenDisplayed(){
         numberOfCellsDisplayed++;
         
       }
-      
+   //if (numberOfCellsDisplayed == numberOfCells){
+   // state = 3; 
+   //}
 
       
       
@@ -640,4 +676,6 @@ void howManyCellsHaveBeenDisplayed(){
   }
   
   println ("number of cells displayed", numberOfCellsDisplayed );
+  println(numberOfCells);
+  println(numberOfMines);
 }
