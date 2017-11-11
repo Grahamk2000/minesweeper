@@ -27,11 +27,12 @@ int numberOfCells;
 int numberOfCellsDisplayed ;
 int greyCellsRemaining;
 color grey = color(150);
+color flagOrange = color(250, 100, 3);
 
 void setup(){
  size (600, 600);
  background(255);
- cols = 8;
+ cols = 10;
  rows = cols;
  numberOfMines = ((rows * cols)/7);
  
@@ -151,6 +152,7 @@ void drawMines(){
         fill(255, 0, 0);
         rect(x*cellWidth, y*cellHeight, cellWidth, cellHeight);
         fill(0);
+        textSize(cellWidth/2);
         text("X",  (x*cellWidth + (cellWidth/2)), (y*cellHeight + (cellHeight/2)));
         
       }
@@ -475,7 +477,7 @@ void displayZeros(){
         fill(255);
         rect(x*cellWidth, y*cellHeight, cellWidth, cellHeight);
         fill(0);
-        textSize(32);
+        textSize(cellWidth/2);
         text('0', (x*cellWidth + (cellWidth/2)), (y*cellHeight + (cellHeight/2)));}
     }
   }
@@ -600,7 +602,7 @@ void displayCellsNextToZeros(){
         fill(cellColour[(board[x][y])]);
         rect(x*cellWidth, y*cellHeight, cellWidth, cellHeight);
         fill(0);
-        textSize(32);
+        textSize(cellWidth/2);
         text(board[x][y], (x*cellWidth + (cellWidth/2)), (y*cellHeight + (cellHeight/2)));}
         
         
@@ -616,6 +618,27 @@ void displayCellsNextToZeros(){
 void displayClickedCell() {
   int xCord = int(mouseX/cellWidth);
   int yCord = int(mouseY/cellHeight);
+  
+
+  
+    if (mouseButton == RIGHT){
+      x = xCord;
+      y = yCord;
+    
+    if( get((int(cellWidth) * x) + int(cellWidth/3), (int(cellHeight) * y) + int(cellHeight/3)) == color(grey)){
+      fill(flagOrange);
+      rect(x*cellWidth, y*cellHeight, cellWidth, cellHeight);
+      fill(0);
+      textSize(cellWidth/5);
+      text("FLAG", (x*cellWidth + (cellWidth/2)), (y*cellHeight + (cellHeight/2)));
+    }
+    
+
+
+      
+      
+    }
+  
   if (mouseButton == LEFT){
     x = xCord;
     y = yCord;
@@ -623,6 +646,11 @@ void displayClickedCell() {
    if (board[x][y] == 9){
       state = 2;
     }
+     
+   //if( get((int(cellWidth) * x) + int(cellWidth/3), (int(cellHeight) * y) + int(cellHeight/3)) == color(flagOrange)){
+   //  fill(grey);
+   //  rect(x*cellWidth, y*cellHeight, cellWidth, cellHeight);
+   // }
      
      
    else if (board[x][y] == 0){
@@ -639,7 +667,7 @@ void displayClickedCell() {
         fill(cellColour[board[x][y]]);
         rect(x*cellWidth, y*cellHeight, cellWidth, cellHeight);
         fill(0);
-        textSize(32);
+        textSize(cellWidth/2);
         text((board[x][y]), (x*cellWidth + (cellWidth/2)), (y*cellHeight + (cellHeight/2)));
       }
       
@@ -649,7 +677,7 @@ void displayClickedCell() {
 
     
   }
-  
+
 }
 
 
@@ -661,7 +689,8 @@ void howManyCellsHaveBeenDisplayed(){
   for (int x=0; x<cols; x++) {
     for (int y=0; y<rows; y++) {
       
-      if( get((int(cellWidth) * x) + 20, (int(cellHeight) * y) + 20) != color(150)){
+      if( get((int(cellWidth) * x) + int(cellWidth/3), (int(cellHeight) * y) + int(cellHeight/3)) != color(grey)  &&
+        get((int(cellWidth) * x) + int(cellWidth/3), (int(cellHeight) * y) + int(cellHeight/3)) != color(flagOrange))  {
         numberOfCellsDisplayed++;
         
       }
